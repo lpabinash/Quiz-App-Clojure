@@ -1,0 +1,10 @@
+.log {
+    overflow: hidden;
+    text-align: left;
+    position: relative;
+    margin: 0px 10px;
+    height: 60px;
+    background-color: pink;
+    color: blue;
+    font-family: Arial;
+  }
