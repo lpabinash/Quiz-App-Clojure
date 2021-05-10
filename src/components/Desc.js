@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import "../App.css";
-const fs = require("fs");
+import Axios from "axios";
+var fs = require('browserify-fs');
 var data = require('./fakeDataDesc.json');
 const editJsonFile = require("edit-json-file");
 // const writeJsonFile = require('write-json-file');
+
 let file = editJsonFile(`${__dirname}/foo.json`);
 
 export class Desc extends Component {
@@ -32,9 +34,20 @@ export class Desc extends Component {
   finishQuiz = (e) => {
  
     console.log(data)
-    file.set(data)
-    console.log(file.get());
-    console.log(data)
+    let text = data;
+    Axios({
+      method: 'post',
+      // headers: "access-control-allow-origin:*",
+      url: 'http://localhost:3010/filename',
+      data: "rockyn619@gmail.com"
+    });
+    Axios({
+      method: 'post',
+      // headers: "access-control-allow-origin:*",
+      url: 'http://localhost:3010/create',
+      data: text
+    });
+
   };
   handleChange=(e)=>{
     
