@@ -1,28 +1,34 @@
-import "./App.css";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-  useParams
-} from "react-router-dom";
-import Main from './Main';
-// import Desc from './Desc';
+import React, { Component } from 'react'
+import { Router, Switch, Route } from "react-router-dom";
 
-import Routes from './Routes';
-import Login from './Login';
-// ['menu', 'playing', 'finished']
-function App() {
+import Desc from "./components/Desc";
+import history from './history';
+import Main from "./Main";
+import Admin from './Admin'
+import Login from './Login'
+import { User } from "./User";
 
-
-  return (
-    <div className="App">
-      {/* <Main/> */}
-      {/* <Login/> */}
-      <Routes />
-    </div>
-  );
+export class App extends Component {
+  state = {
+    loggedIn: false,
+  };
+  render() {
+    return (
+      <div>
+         <Router history={history}>
+                <Switch>
+                    <Route path="/admin" exact component={Admin} />
+                    <Route path="/user" exact component={User} />
+                    <Route path="/Desc" exact component={Desc} />
+                    <Route path="/quiz" exact component={Main} />
+                    <Route path="/"  component={Login} />
+                    
+                </Switch>
+            </Router>
+      </div>
+    )
+  }
 }
 
-export default App;
+export default App
+
