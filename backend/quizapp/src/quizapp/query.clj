@@ -17,6 +17,8 @@
 
 (defentity users)
 
+
+
 (defn get-users []
   (select users))
 
@@ -29,7 +31,7 @@
 
 (defn delete-user [UserID]
   (delete users
-          (where {:userID UserID})))
+          (where {:UserID UserID})))
 
 (defn update-user [UserID descmark]
   (update users
@@ -41,3 +43,12 @@
   (first    (select users
             (where {:UserID UserID}))))
 
+;(defn add-answer [UserID email question answer]
+;  (insert useranswers
+;          (values {:UserID UserID
+;                   :email email
+;                   :question question
+;                   :answer answer})))
+;(defn show-answers [UserID]
+;    (select useranswers
+;            (where {:UserID UserID})))
