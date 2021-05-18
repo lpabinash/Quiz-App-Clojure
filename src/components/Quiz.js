@@ -1,11 +1,24 @@
 import "../App.css";
 // import { Questions } from "../helpers/Questions";
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import Axios from "axios";
 
 
 import { useContext } from "react";
 import { GameStateContext } from "../helpers/Contexts";
-var data = require('./fakeData.json');
+
+var requiredData=" ";
+window.onload=function main() {
+
+  Axios.get('http://localhost:3010/quiz')
+  .then((response) => {
+    // console.log(response.data[0]);
+    requiredData=response.data[0]
+  });
+}
+
+// main();
+
 
 function Quiz() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -14,7 +27,7 @@ function Quiz() {
   const { score, setScore, gameState, setGameState } = useContext(
     GameStateContext
   );
-
+ 
 
 
   const chooseOption = (option) => {
@@ -24,7 +37,7 @@ function Quiz() {
   };
 
   const nextQuestion = () => {
-    if (data[currentQuestion].asnwer == optionChosen) {
+    if (requiredData[currentQuestion].answer == optionChosen) {
       setScore(score + 1);
     }
     setCurrentQuestion(currentQuestion + 1);
@@ -33,18 +46,18 @@ function Quiz() {
   };
 
   const finishQuiz = () => {
-    if (data[currentQuestion].asnwer == optionChosen) {
+    if (requiredData[currentQuestion].answer == optionChosen) {
       setScore(score + 1);
     }
    
-      console.log('data:', data);
-   
+      console.log('requiredData:', requiredData);
+   console.log(score)
     setGameState("finished");
   };
 
   return (
     <div className="Quiz">
-      <h1>{data[currentQuestion].prompt}</h1>
+      <h1>{requiredData[currentQuestion].prompt}</h1>
       <div className="questions">
         <button style={{backgroundColor:optionChosen=="optionA"?"cyan":"white"}}
           onClick={() => {
@@ -52,32 +65,32 @@ function Quiz() {
             chooseOption("optionA");
           }}
         >
-          {data[currentQuestion].optionA}
+          {requiredData[currentQuestion].optionA}
         </button>
         <button style={{backgroundColor:optionChosen=="optionB"?"cyan":"white"}}
           onClick={() => {
             chooseOption("optionB");
           }}
         >
-          {data[currentQuestion].optionB}
+          {requiredData[currentQuestion].optionB}
         </button>
         <button style={{backgroundColor:optionChosen=="optionC"?"cyan":"white"}}
           onClick={() => {
             chooseOption("optionC");
           }}
         >
-          {data[currentQuestion].optionC}
+          {requiredData[currentQuestion].optionC}
         </button>
         <button style={{backgroundColor:optionChosen=="optionD"?"cyan":"white"}}
           onClick={() => {
             chooseOption("optionD");
           }}
         >
-          {data[currentQuestion].optionD}
+          {requiredData[currentQuestion].optionD}
         </button>
       </div>
 
-      {currentQuestion == data.length - 1 ? (
+      {currentQuestion == requiredData.length - 1 ? (
         <button onClick={finishQuiz} id="nextQuestion">
           Finish Quiz
         </button>

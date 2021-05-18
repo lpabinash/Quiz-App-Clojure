@@ -4,9 +4,9 @@ import { Router, Switch, Route } from "react-router-dom";
 import Desc from "./components/Desc";
 import history from './history';
 import Main from "./Main";
-import Admin from './Admin'
-import Login from './Login'
-import { User } from "./User";
+import Admin from './components/Login/Admin'
+import Login from './components/Login/Login'
+import { User } from "./components/Login/User";
 
 export class App extends Component {
   state = {

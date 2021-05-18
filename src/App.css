@@ -24,6 +24,7 @@
   height: 50px;
   margin: 5px;
   border: none;
+  margin-top: 50px;
   border-radius: 5px;
   font-size: 20px;
 }
@@ -43,6 +44,18 @@ button:hover {
   align-items: center;
 }
 
+.questions{
+ margin-left:5%;
+
+}
+.Quiz button{
+  width: 600px;
+  margin-bottom: 20px;
+  margin-right: 10px;
+  margin-left: 10px;
+  border-radius: 20px;
+  font-weight: 800;
+}
 .Menu, .Quiz, .EndScreen h1 {
   color: white;
   /* height:100px */

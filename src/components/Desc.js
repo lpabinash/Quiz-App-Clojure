@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
 import "../App.css";
 import Axios from "axios";
-var fs = require('browserify-fs');
-var data = require('./fakeDataDesc.json');
-const editJsonFile = require("edit-json-file");
-// const writeJsonFile = require('write-json-file');
+// var fs = require('browserify-fs');
+// var receiveddata = require('./fakeData.json');
 
-let file = editJsonFile(`${__dirname}/foo.json`);
+var data=" ";
+function main() {
+
+  Axios.get('http://localhost:3010/quiz')
+  .then((response) => {
+    // console.log(response.data[0]);
+    data=response.data[1]
+  });
+}
+
+main();
 
 export class Desc extends Component {
   state={
@@ -14,14 +22,6 @@ export class Desc extends Component {
     answers:data[0].answer
   
   }
-
-//   componentDidMount() {
-   
-//     data.map(i=>{i["answer"]=""})
-
-//     console.log(data)
-
-//  }
 
   nextQuestion = (e) => {
    
@@ -39,7 +39,7 @@ export class Desc extends Component {
       method: 'post',
       // headers: "access-control-allow-origin:*",
       url: 'http://localhost:3010/filename',
-      data: "rockyn619@gmail.com"
+      data: localStorage.getItem("email")
     });
     Axios({
       method: 'post',

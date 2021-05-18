@@ -11,6 +11,7 @@ function Main() {
     const [gameState, setGameState] = useState("menu");
     const [userName, setUserName] = useState("");
     const [score, setScore] = useState(0);
+    const [requiredData, setrequiredData] = useState(null);
     return (
         <div>
             {/* <h1>Quiz App</h1> */}
@@ -22,6 +23,8 @@ function Main() {
           setUserName,
           score,
           setScore,
+          requiredData, 
+          setrequiredData
         }}
       >
         {gameState === "menu" && <Menu />}

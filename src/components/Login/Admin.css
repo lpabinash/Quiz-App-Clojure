@@ -1,0 +1,30 @@
+.main{
+  overflow-x: hidden;
+  width:100vw;
+  height:100vh
+}
+.sidebar{
+  /* background-color: grey; */
+  width:20vw;
+  height:100vh;
+  padding-left: 70px;
+  background-image: url('./../../helpers/wp4565927.jpg');
+  
+}
+
+.content{
+  width:80vw
+}
+table{
+  width:80vw;
+}
+h1,h4 {
+  text-align:center;
+}
+.upload{
+  width:600px;
+  /* height:400px; */
+  /* background-color: red; */
+  margin-top:30%;
+  margin-left:40%
+}
