@@ -1,4 +1,3 @@
-
 const express = require('express');
 // const logger = require('morgan');
 const cors = require('cors');
@@ -41,7 +40,8 @@ app.post('/create', function(req, res) {
       // console.log(obj)
     },
     {});
-  fs.writeFile(`${fileName[0]}.JSON`, JSON.stringify(artists), function (err) {
+    // var path = "E:\\QuizApp\\Test.json";
+  fs.writeFile("./../src/"+`${fileName[0]}.json`, JSON.stringify(artists), function (err) {
     if (err) throw err;
     console.log('Saved!');
   });
