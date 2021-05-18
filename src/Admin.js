@@ -1,187 +1,227 @@
-import React from 'react';
-//  import './Admin.css';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import React, { Component } from 'react'
+import Tab from 'react-bootstrap/Tab'
+import Tabs from 'react-bootstrap/Tabs'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Table from 'react-bootstrap/Table'
+import Modal from 'react-bootstrap/Modal'
+import Axios from 'axios';
+const scoreArr=[]
+let indscore=0
+export class Admin extends Component {
+  state={
+    key:"home",
+    data:[],
+    show:false,
+    show1:false,
+    currentQuestion:0,
+    answers:{},
+    scores:[],
+    score:0,
+    email:""
+  }
 
-var data = require('./fakeusers.json');
 
-
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
+   handleClose = () => this.setState({show:false,show1:false});
+   handlepopup = () => this.setState({show:true});
+  handlepopup1 = (e) => {
+    this.setState({show1:true})
+    this.setState({email:e.target.getAttribute('datakey')})
+    Axios({
+      method: 'post',
+      // headers: "access-control-allow-origin:*",
+      url: 'http://localhost:3010/answerfilename',
+      data: e.target.getAttribute('datakey')
+    });
+  Axios.get('http://localhost:3010/answerFile')
+  .then((response) => {
+    console.log(response.data);
+    this.setState({answers:response.data})
+  });      
 }
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
-
-export default function SimpleTabs() {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-  const [fileName, setfileName]= React.useState("");
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  let fileReader;
-  
-  const handleFileRead = (e) => {
-    const content = fileReader.result;
+   handleFileRead = (e) => {
+    const content = e.target.result;
     console.log(JSON.parse(content))
+    
+    Axios({
+      method: 'post',
+      // headers: "access-control-allow-origin:*",
+      url: 'http://localhost:3010/createQuiz',
+      data: JSON.parse(content)
+    });
     // console.log(Object.entries(content))
     // … do something with the 'content' …
   };
   
-  const handleFileChosen = (file) => {
-    fileReader = new FileReader();
-    fileReader.onloadend = handleFileRead;
+   handleFileChosen = (file) => {
+    var fileReader = new global.FileReader();
+    fileReader.onloadend = this.handleFileRead;
     fileReader.readAsText(file);
   };
 
-  return (
-    <div className={classes.root}  >
-      <AppBar position="static" style={{width:"100vw"}}>
-        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-        <Tab label="Home" {...a11yProps(0)} />
-          <Tab label="Upload" {...a11yProps(1)} />
-          <Tab label="Evaluate" {...a11yProps(2)} />
-          <Tab label="Result" {...a11yProps(3)} />
+  handleEvaluate=()=>{
+    Axios.get('http://localhost:3000/quizapp/users')
+        .then((response) => {
+          console.log(response.data);
+          this.setState({data:response.data})
+        });
+        console.log("done")
+  }
+  componentDidMount() {
+    this.handleEvaluate();   
+}
+nextQuestion=()=>{
+  this.setState({currentQuestion:this.state.currentQuestion+1})
+  // this.setState({ scores: [...this.state.scores, this.state.score] })
+  scoreArr.push(indscore)
+  // console.log(scoreArr[10])
+  this.setState({score:0})
+}
 
-            <button  className="log" href = "/login/" > Logout </button>
+handleScore=(e)=>{
+  indscore=Number(e.target.value)
+  // console.log(indscore)
+  this.setState({score:Number(e.target.value)})
+}
+finishQuiz=()=>{
+  // this.setState({ scores: [...this.state.scores, this.state.score] })
+  scoreArr.push(indscore)
+  console.log(scoreArr)
+  let sum = scoreArr.reduce(function (accumulator, current) {
+    return accumulator + current;
+});
+console.log(this.state.email)
+Axios({
+    method: 'PUT',
+    // headers: "access-control-allow-origin:*",
+    url: 'http://localhost:3000/quizapp/update-user',
+    data: {
+      "UserID": 0,
+      "email": this.state.email,
+      "mcqmark": 0,
+      "descmark": sum,
+      "status": true
+    }
+  });
+  // this.setState({currentQuestion:0});
+  this.handleEvaluate();   
+  // this.setState({show:false})
 
-        </Tabs>
-      </AppBar>
+}
 
-      <TabPanel value={value} index={0}>
-<h1>Welcome Admin</h1>
-
-<h4>You can Upload, Evaluate or see the results by navigating the tabs above</h4>
-
-
-</TabPanel>
-      
-      <TabPanel value={value} index={1}>
-        Click to upload a file.
-        <div>
+  render() {
+    return (
+      <div>
+       <Tabs
+      id="controlled-tab-example"
+      activeKey={this.state.key}
+      onSelect={(k) => this.setState({key:k})}
+    >
+      <Tab eventKey="home" title="Home">
+      <h1>Welcome Admin</h1>
+      <h4>You can Upload, Evaluate or see the results by navigating the tabs above</h4>
+      </Tab>
+      <Tab eventKey="upload" title="Upload">
+               Click to upload a file.
+        
         <input
             type='file'
             id='file'
             className='input-file'
             accept='.json'
-            onChange={e => handleFileChosen(e.target.files[0])}
+            onChange={e => this.handleFileChosen(e.target.files[0])}
           />
-            </div>
-
-   
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Evaluate page link goes here
-        <div>
-        <TableContainer style={{width:"70vw",margin:"auto"}}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>e-Mail</TableCell>
-            <TableCell align="right">MCQ Marks</TableCell>
-            <TableCell align="right">Descriptive Marks</TableCell>
-            <TableCell align="right">Status</TableCell>
-            {/* <TableCell align="right">Protein&nbsp;(g)</TableCell> */}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          
-        {data.map((row) => (
-            <TableRow key={row.UserID}>
-              <TableCell component="th" scope="row">
-                {row.email}
-              </TableCell>
-              <TableCell align="right">{row.mcqmark}</TableCell>
-              <TableCell align="right">{row.descmark}</TableCell>
-              <TableCell align="right">{row.status===true?"evaluated":<button style={{width:"100px",fontSize:"15px"}}>Evaluate</button>}</TableCell>
-            </TableRow>
-          ))}
-          
-        </TableBody>
-      </Table>
-    </TableContainer>
-          </div>
-      </TabPanel>
-
-
-
-      <TabPanel value={value} index={3}>
-        Result page link goes here
-        <div>
-        <TableContainer style={{width:"70vw",margin:"auto"}}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>e-Mail</TableCell>
-            <TableCell align="right">MCQ Marks</TableCell>
-            <TableCell align="right">Descriptive Marks</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-        {data.filter(item => 
-    item.descmark>0).map(row => (
-      <TableRow key={row.UserID}>
-      <TableCell component="th" scope="row">
-        {row.email}
-      </TableCell>
-      <TableCell align="right">{row.mcqmark}</TableCell>
-      <TableCell align="right">{row.descmark}</TableCell>
-    </TableRow>
-  ))}
-  </TableBody>
-      </Table>
-    </TableContainer>
-          </div>
-      </TabPanel>
-    </div>
-  );
+      </Tab>
+      <Tab eventKey="evaluate" title="Evaluate" onClick={this.handleEvaluate} >
+      <Table striped bordered hover variant="dark">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>MCQ Marks</th>
+      <th>Descriptive Marks</th>
+      <th>Evaluation Status</th>
+    </tr>
+  </thead>
+  <tbody>
+  {this.state.data.map((row) => (
+    <tr key={row.UserID}>
+      <td>{row.email}</td>
+      <td>{row.mcqmark}</td>
+      <td>{row.descmark}</td>
+      <td>{row.status===true?"evaluated":<button onClick={this.handlepopup1} datakey={row.email}>Evaluate</button>}<Modal show={this.state.show1} onHide={this.handleClose}>
+         <Modal.Header closeButton>
+         </Modal.Header>
+         <Modal.Body>
+         
+          <h1 style={{fontSize:"5.2vmin"}}>{Object.keys(this.state.answers)[this.state.currentQuestion]}</h1>
+         <h1 style={{fontSize:"5.2vmin"}}>Answer:-{Object.values(this.state.answers)[this.state.currentQuestion]}</h1>
+         <input onChange={this.handleScore} value={this.state.score} type="text"/>
+       {/* {currentQuestion > 0 ? (
+        <button onClick={prevQues} id="nextQuestion">
+          Previous Question
+        </button>
+      ) : (
+        null
+      )} */}
+      {this.state.currentQuestion == Object.keys(this.state.answers).length - 1 ? (
+        <button onClick={this.finishQuiz} id="nextQuestion">
+          Finish Quiz
+        </button>
+      ) : (
+        <button onClick={this.nextQuestion} id="nextQuestion">
+          Next Question
+        </button>
+      )}
+        </Modal.Body>
+        
+         
+       </Modal></td>
+    </tr>
+    ))}
+  </tbody>
+ 
+</Table>
+      </Tab>
+      <Tab eventKey="result" title="Result" onClick={this.handleEvaluate} >
+      <Table striped bordered hover variant="dark">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Total Marks</th>
+      {/* <th>Descriptive Marks</th>
+      <th>Evaluation Status</th> */}
+    </tr>
+  </thead>
+  <tbody>
+    {console.log(this.state.data)}
+  {this.state.data.map((item) => (
+    <tr key={item.UserID}>
+      <td onClick={this.handlepopup}>{item.email}</td>
+      <td>{item.mcqmark+item.descmark}</td>
+      <Modal show={this.state.show} onHide={this.handleClose}>
+         <Modal.Header closeButton>
+         </Modal.Header>
+         <Modal.Body>
+         <h1 style={{fontSize:"5.2vmin"}}>email:{item.email}</h1>
+         <h1 style={{fontSize:"5.2vmin"}}>MCQ Marks:{item.mcqmark}</h1>
+         <h1 style={{fontSize:"5.2vmin"}}>Descriptive Marks:{Number(item.descmark)}</h1>
+        
+      
+         </Modal.Body>
+        
+        
+       </Modal>
+      {/* <td>{row.descmark}</td> */}
+      {/* <td>{row.status===true?"evaluated":<button datakey={row.email}>Evaluate</button>}</td> */}
+    </tr>
+    ))}
+  </tbody>
+ 
+</Table>
+      </Tab>
+    </Tabs>
+      </div>
+    )
+  }
 }
+
+export default Admin
