@@ -83,6 +83,11 @@
 
 (defn upload-file
           [file]
-                (ds/copy (file :tempfile) (ds/file-str "file.out"))
+                (ds/copy (file :tempfile) (ds/file-str "D://file.json"))
                       )
 
+
+(defn upload-answerfile
+          [email file]
+                (ds/copy (file :tempfile) (ds/file-str (format "answers/%s.json" email)))
+                      )

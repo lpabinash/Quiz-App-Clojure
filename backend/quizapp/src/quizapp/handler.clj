@@ -53,7 +53,13 @@
       (POST "/file" []
         :multipart-params [foo :- upload/TempFileUpload]
         :middleware [upload/wrap-multipart-params]
-      (ok (q/upload-file (dissoc foo :tempfile))))
+      (ok (q/upload-file foo)))
+      
+        
+      (POST "/uplaod_answer" []
+        :multipart-params [foo :- upload/TempFileUpload email :- s/Str]
+        :middleware [upload/wrap-multipart-params]
+      (ok (q/upload-answerfile email foo)))
       )))
 
   (def handler
