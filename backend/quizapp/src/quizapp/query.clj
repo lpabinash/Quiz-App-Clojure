@@ -2,7 +2,10 @@
     (:refer-clojure :exclude [update])
   (:require [quizapp.database :refer [db]]
             [korma.core :refer :all]
-            [schema.core :as s]))
+            [schema.core :as s]
+            [clojure.data.json :as json]
+            [compojure.core :refer :all]
+            (clojure.contrib [duck-streams :as ds])))
 
 (s/defschema UserBody
              {:email s/Str})
@@ -13,6 +16,21 @@
               :mcqmark s/Int
               :descmark s/Int
               :status s/Bool})
+(s/defschema AddBody
+             {:email s/Str
+              :mcqmark s/Int
+              :descmark s/Int
+              :status s/Bool})
+
+
+(s/defschema UpdateBody
+             {:UserID s/Int
+              :descmark s/Int})
+
+(s/defschema AddFileBody
+             {:filename s/Str
+              })
+
 
 
 (defentity users)
@@ -43,12 +61,28 @@
   (first    (select users
             (where {:UserID UserID}))))
 
-;(defn add-answer [UserID email question answer]
-;  (insert useranswers
-;          (values {:UserID UserID
-;                   :email email
-;                   :question question
-;                   :answer answer})))
-;(defn show-answers [UserID]
-;    (select useranswers
-;            (where {:UserID UserID})))
+
+
+(defn get-answers [filePath]
+(json/read-str (slurp (format "D://data/%s.json" filePath))
+:key-fn keyword)) 
+
+(defn readFile [filePath]
+  (let [content (json/read-str (slurp (format "D://data/%s.json" filePath))
+                                   :key-fn keyword)
+        multiple-choice-questions (-> content :questions :mcq)
+        descriptive-questions (-> content :questions :descriptive)]
+    (doseq [question-answer-map multiple-choice-questions
+          :let [{:keys [question option-a option-b option-c option-d answer]} question-answer-map]]
+      (println "question -->" question)
+      (println "option-a -->" option-a)
+      (println "option-b -->" option-b)
+      (println "option-c -->" option-c)
+      (println "option-d -->" option-d)
+      (println "ans -->" answer))))
+
+(defn upload-file
+          [file]
+                (ds/copy (file :tempfile) (ds/file-str "file.out"))
+                      )
+

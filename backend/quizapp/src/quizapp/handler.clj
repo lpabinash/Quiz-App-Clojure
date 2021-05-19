@@ -2,10 +2,12 @@
   (:require 
             [compojure.api.sweet :refer :all]
             [ring.util.http-response :refer :all]
-            [quizapp.middleware :refer [wrap-cors]]
+          [quizapp.middleware :refer [wrap-cors]]
             [schema.core :as s]
             [quizapp.query :as q]
-            ))
+            [clojure.java.io :as io]
+            (ring.middleware [multipart-params :as mp])
+            [compojure.api.upload :as upload]))
 
 
 ;; accept everything
@@ -25,33 +27,33 @@
       
      (GET "/users" []
         (ok (q/get-users )))
-      (GET "/users/UserID" []
+      (GET "/users/:UserID" []
         :path-params [UserID :- s/Int]
         (ok (q/get-user UserID)))
       (POST "/add-user" []
-        :body [user-body q/UserBody]
+        :body [user-body q/AddBody]
         (let [{:keys [email mcqmark descmark status]} user-body]
           (ok (q/add-user email mcqmark descmark status))))
       (PUT "/update-user" []
-        :body [user-body q/UserBody]
+        :body [user-body q/UpdateBody]
         (let [{:keys [UserID descmark ]} user-body]
           (ok {:updated (q/update-user UserID descmark)})))
-      (DELETE "/users/UserID" []
+      (DELETE "/delete-user/:UserID" []
         :path-params [UserID :- s/Int]
-        (ok {:deleted (q/delete-user UserID)})) 
-
-     
+        (ok {:deleted (q/delete-user UserID)}))
+       (GET "/answers/:filepath" []
+            :path-params [filepath]
+        (ok (q/get-answers filepath )))
+        (GET "/read-file/:filepath" []
+          :path-params [filepath]
+        (ok (q/readFile filepath )))
+;         (mp/wrap-multipart-params
+;            (POST "/file" {params :params} (q/upload-file (get params "file"))))
       
-  
-
-;      (POST "/add-answer" []
-;        :body [answer-body q/AddAnswer]
-;        (let [{:keys [UserID email question answer]} answer-body]
-;          (ok (q/add-answer UserID email question answer))))
-;      (GET "/answers/:UserID" []
-;        :path-params [UserID :- s/Int]
-;        (ok (q/show-answers UserID)))
-
+      (POST "/file" []
+        :multipart-params [foo :- upload/TempFileUpload]
+        :middleware [upload/wrap-multipart-params]
+      (ok (q/upload-file (dissoc foo :tempfile))))
       )))
 
   (def handler
