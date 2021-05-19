@@ -17,6 +17,8 @@
                  [ring-basic-authentication "1.0.5"]
                  [ring-token-authentication "0.1.0"]
                  [metosin/ring-http-response "0.9.0"]
+                 [org.clojure/data.json "2.3.0"]
+                 [org.clojure/clojure-contrib "1.2.0"]
 ]
    :ring {:handler quizapp.handler/handler}
    :uberjar-name "server.jar"

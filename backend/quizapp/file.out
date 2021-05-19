@@ -1,0 +1,26 @@
+{
+  "questions": {
+    "mcq" : [
+    {
+          "question": "Which of these is not a Clojure variable? ",
+           "option-a": "Print",
+           "option-b": "Short",
+           "option-c": "Char",
+           "option-d": "String",
+           "answer": "option-a"
+  },
+  {
+          "question": "Current version of clojure",
+           "option-a": "1.2.1",
+           "option-b": "1.5.7",
+           "option-c": "1.2.7",
+           "option-d": "1.10",
+           "answer": "option-d"
+  }
+    ],
+    "descriptive":[
+     { "question":  "Write fibonacii series."},
+     { "question":  "Write even series."}
+    ]
+}
+}
