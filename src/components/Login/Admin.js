@@ -56,13 +56,14 @@ export class Admin extends Component {
    handleFileRead = (e) => {
     const content = e.target.result;
     console.log(JSON.parse(content))
+    console.log(content)
     
-    Axios({
-      method: 'post',
-      // headers: "access-control-allow-origin:*",
-      url: 'http://localhost:3010/createQuiz',
-      data: JSON.parse(content)
-    });
+    // Axios({
+    //   method: 'post',
+    //   // headers: "access-control-allow-origin:*",
+    //   url: 'http://localhost:3010/createQuiz',
+    //   data: JSON.parse(content)
+    // });
     // console.log(Object.entries(content))
     // … do something with the 'content' …
   };
@@ -118,7 +119,8 @@ Axios({
     }
   });
   // this.setState({currentQuestion:0});
-  this.handleEvaluate();   
+  this.handleEvaluate();  
+  this.handleClose(); 
   // this.setState({show:false})
 
 }
@@ -178,7 +180,7 @@ handledata=(e)=>{
           </div>
         </Tab.Pane>
         <Tab.Pane eventKey="third">
-        <Table style={{width:"81vw",borderRadius:"20px",height:"94vh",marginTop:"15px",marginLeft:"-15px"}} striped bordered hover variant="dark">
+        <Table style={{width:"78vw",overflowX:"hidden",borderRadius:"20px",height:"94vh",marginTop:"15px"}} striped bordered hover variant="dark">
   <thead>
     <tr>
       <th>Email</th>
@@ -190,10 +192,10 @@ handledata=(e)=>{
   <tbody>
   {this.state.data.map((row) => (
     <tr key={row.UserID}>
-      <td>{row.email}</td>
-      <td>{row.mcqmark}</td>
-      <td>{row.descmark}</td>
-      <td>{row.status===true?"evaluated":<button onClick={this.handlepopup1} style={{width:"250px"}} datakey={row.email}>Evaluate</button>}<Modal show={this.state.show1} onHide={this.handleClose}>
+      <td style={{fontSize:"20px"}}>{row.email}</td>
+      <td  style={{fontSize:"20px"}}>{row.mcqmark}</td>
+      <td style={{fontSize:"20px"}}>{row.descmark}</td>
+      <td style={{fontSize:"20px"}}>{row.status===true?"evaluated":<button onClick={this.handlepopup1} style={{width:"250px"}} datakey={row.email}>Evaluate</button>}<Modal show={this.state.show1} onHide={this.handleClose}>
          <Modal.Header closeButton>
          </Modal.Header>
          <Modal.Body>
@@ -228,7 +230,7 @@ handledata=(e)=>{
 </Table>
         </Tab.Pane>
         <Tab.Pane eventKey="fourth">
-        <Table style={{width:"81vw",borderRadius:"20px",height:"94vh",marginTop:"15px",marginLeft:"-15px"}} striped bordered hover variant="dark">
+        <Table style={{width:"78vw",borderRadius:"20px",height:"94vh",marginTop:"15px",}} striped bordered hover variant="dark">
   <thead>
     <tr>
       <th>Email</th>
@@ -241,15 +243,26 @@ handledata=(e)=>{
     {console.log(this.state.data)}
   {this.state.data.map((item) => (
     <tr key={item.UserID}>
-      <td onClick={this.handlepopup} datakeyemail={item.email} datakeymcq={item.mcqmark} datakeydesc={item.descmark}>{item.email}</td>
-      <td onClick={this.handledata} datakeyemail={item.email} datakeymcq={item.mcqmark} datakeydesc={item.descmark}>{item.mcqmark+item.descmark}</td>
+      <td  style={{fontSize:"20px"}} onClick={this.handlepopup} datakeyemail={item.email} datakeymcq={item.mcqmark} datakeydesc={item.descmark}>{item.email}</td>
+      <td  style={{fontSize:"20px"}} onClick={this.handledata} datakeyemail={item.email} datakeymcq={item.mcqmark} datakeydesc={item.descmark}>{item.mcqmark+item.descmark}</td>
       <Modal show={this.state.show} onHide={this.handleClose}>
          <Modal.Header closeButton>
          </Modal.Header>
          <Modal.Body>
-         <h1 style={{fontSize:"5.2vmin"}}>email:{useremail}</h1>
-         <h1 style={{fontSize:"5.2vmin"}}>MCQ Marks:{usermcq}</h1>
-         <h1 style={{fontSize:"5.2vmin"}}>Descriptive Marks:{userdesc}</h1>
+           <Table>
+         <thead><tr>
+            <th>Email</th>
+            <th>MCQ Marks</th>
+            <th>Descriptive Marks</th>
+         </tr></thead>
+         <tbody>
+           <tr>
+         <td style={{fontSize:"20px"}} >{useremail}</td>
+         <td style={{fontSize:"20px"}} >{usermcq}</td>
+         <td style={{fontSize:"20px"}} >{userdesc}</td>
+         </tr>
+         </tbody>
+         </Table>
         
       
          </Modal.Body>
