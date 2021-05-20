@@ -1,0 +1,112 @@
+
+
+   /* .log{
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background: #3f51b5;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    float:right;
+    border-style: solid;
+    border-width: thick;
+    position: absolute;
+    height: 60px;
+    top: 0;
+    right: 0;
+
+  }  */
+
+
+  .upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+  }
+  
+  .input-file {
+    border: 2px solid gray;
+    color: gray;
+    background-color: white;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+  }
+  
+  .uploadbtn {
+    border: 2px solid gray;
+    color: gray;
+    background-color: white;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .uploadbtn:hover {
+    border: 1px #9dafd6 solid;
+    box-shadow: 0 1px 1px #EAEAEA, inset 0 1px 0 #72767c;
+    background: #415dd8;
+}
+.uploadbtn:active {
+    transform: scale(0.98);
+    /* Scaling button to 0.98 to its original size */
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
+}
+
+
+
+
+  button.logout {
+    background: #39d15f;
+
+    /* background: #4C8FFB; */
+    border: 1px #0e8a3d solid;
+    /* border: 1px #3079ED solid; */
+    box-shadow: inset 0 1px 0 #0b8b1c;
+
+    /* box-shadow: inset 0 1px 0 #80B0FB; */
+    box-shadow: inset 0 1px 0 #07942a;
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    
+    
+    color: #FFFFFF;
+    font-size: 14px;
+    float:right;
+    
+ 
+    position: absolute;
+    height: 60px;
+    top: 0;
+    right: 0;
+
+
+}
+
+button.logout:hover {
+    border: 1px #9dafd6 solid;
+    box-shadow: 0 1px 1px #EAEAEA, inset 0 1px 0 #72767c;
+    background: #188f4a;
+}
+
+button.logout:active {
+    box-shadow: inset 0 2px 5px #2370FE;   
+        transform: scale(0.98);
+        /* Scaling button to 0.98 to its original size */
+        box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+        /* Lowering the shadow */
+    
+}
