@@ -50,7 +50,8 @@ export class Desc extends Component {
         "file": JSON.stringify(data) 
       }
     });
-
+    window.alert("Logging out");
+    window.location.href = 'http://localhost:3001/';
   };
   handleChange=(e)=>{
     

@@ -30,11 +30,11 @@ Axios.post('http://localhost:3000/quizapp/add-user', article)
   }
   return (
     <div className="EndScreen">
-      <h1>Go to Subjective Questions</h1>
+      <h1>You have finished the MCQ part, Now you can move to subjective questions</h1>
      
       {/* <button onClick={handleClick}>Sub</button> */}
      <button onClick={handleClick}><Link to="/Desc" >
-                        Sub
+                        Subjective Questions
                     </Link></button>
     </div>
   );

@@ -9,6 +9,8 @@ function Menu() {
   );
   return (
     <div className="Menu">
+      <h1>Welcome to the skill assessor</h1>
+      <h2>Please go through the below instructions before taking the test</h2>
       <ul style={{padding:0}}>
     General information:
 <li>1. The examination will comprise of both Multiple Choice Questions (MCQs) and Descriptive Questions</li>
