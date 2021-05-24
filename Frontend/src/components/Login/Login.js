@@ -112,9 +112,10 @@ export class Login extends Component {
     render() {
         return (
 
-            <div>
-            <div   className="login">  
-   
+            <div> <div> <h1>Welcome to the skill assessor platform</h1></div> 
+
+            <div   className="login">              
+
    <form className="login-form">
    
    

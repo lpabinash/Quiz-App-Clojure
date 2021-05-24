@@ -8,7 +8,9 @@
   width:20vw;
   height:100vh;
   padding-left: 70px;
-  background-image: url('./../../helpers/25574.png');
+  /* background-color: rgb(17, 19, 18); */
+  background-image: linear-gradient(to right,green,black);
+  /* background-image: url('./../../helpers/25574.png'); */
   position: fixed;
   
 }
@@ -29,6 +31,16 @@ h1,h4 {
   width:600px;
   /* height:400px; */
   /* background-color: red; */
-  margin-top:30%;
-  margin-left:40%
+ /* margin-top:30%;*/
+  margin-left:20% 
+}
+
+.input-file {
+  border: 2px solid gray;
+  color: gray;
+  background-color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
 }

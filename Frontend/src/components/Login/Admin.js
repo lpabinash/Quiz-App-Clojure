@@ -9,6 +9,8 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Axios from 'axios';
 import "./Admin.css";
+import pic from "./../../helpers/example.png"
+
 const scoreArr=[]
 let indscore=0
 let useremail=""
@@ -134,8 +136,9 @@ Axios({
   // this.setState({currentQuestion:0});
   this.handleEvaluate();  
   this.handleClose(); 
+  window.alert("Marks updated")
   // this.setState({show:false})
-this.handlelogout();
+  window.location.reload();
 }
 
 handledata=(e)=>{
@@ -185,8 +188,12 @@ handledata=(e)=>{
         </Tab.Pane>
         <Tab.Pane eventKey="second">
           <div className="upload">
-       Click to upload a file.
-        
+
+          <p><h3>Please choose a json file with the questions to be displayed for the user when taking test.</h3></p>
+<p>You can click <b> 'choose file' </b>to select the json file with questions and to upload it.<br/>
+ The json file must be in the below format </p>
+<img   width="700" height="320" src = {pic}/>     
+
         <input
             type='file'
             id='file'
@@ -197,7 +204,7 @@ handledata=(e)=>{
           </div>
         </Tab.Pane>
         <Tab.Pane eventKey="third">
-        <Table style={{width:"78vw",overflowX:"hidden",borderRadius:"20px",height:"94vh",marginTop:"15px"}} striped bordered hover variant="dark">
+        <Table style={{width:"78vw",overflowX:"hidden",borderRadius:"20px",height:"94vh",marginTop:"15px"}} striped bordered hover >
   <thead>
     <tr>
       <th>Email</th>
@@ -212,14 +219,16 @@ handledata=(e)=>{
       <td style={{fontSize:"20px"}}>{row.email}</td>
       <td  style={{fontSize:"20px"}}>{row.mcqmark}</td>
       <td style={{fontSize:"20px"}}>{row.descmark}</td>
-      <td style={{fontSize:"20px"}}>{row.status===true?"evaluated":<button onClick={this.handlepopup1} style={{width:"250px"}} datakey={row.email}>Evaluate</button>}<Modal show={this.state.show1} onHide={this.handleClose}>
+      <td style={{fontSize:"20px"}}>{row.status===true?"evaluated":<button onClick={this.handlepopup1} style={{width:"200px",backgroundColor:"grey"}} datakey={row.email}>Evaluate</button>}
+      <Modal show={this.state.show1} dialogClassName="modal-90w"
+        aria-labelledby="example-custom-modal-styling-title" onHide={this.handleClose}>
          <Modal.Header closeButton>
          </Modal.Header>
          <Modal.Body>
          
          <h1 style={{fontSize:"5.2vmin"}}>{Object.keys(this.state.answers)[this.state.currentQuestion]}</h1>
-         <h1 style={{fontSize:"5.2vmin"}}>Answer:-{Object.values(this.state.answers)[this.state.currentQuestion]}</h1>
-         <input onChange={this.handleScore} value={this.state.score} type="text"/>
+         <textarea style={{width:"33.5vw",height:"50vh",fontSize:"16px"}} value={Object.values(this.state.answers)[this.state.currentQuestion]}/>
+         <input onChange={this.handleScore} value={this.state.score} type="text" style={{fontSize:"3.2vmin"}}/>
        {/* {currentQuestion > 0 ? (
         <button onClick={prevQues} id="nextQuestion">
           Previous Question
@@ -229,7 +238,7 @@ handledata=(e)=>{
       )} */}
       {this.state.currentQuestion ==Object.keys(this.state.answers).length - 1 ? (
         <button onClick={this.finishQuiz} id="nextQuestion">
-          Finish Quiz
+          Finish Evaluation
         </button>
       ) : (
         <button onClick={this.nextQuestion} id="nextQuestion">
@@ -239,7 +248,8 @@ handledata=(e)=>{
         </Modal.Body>
         
          
-       </Modal></td>
+       </Modal>
+       </td>
     </tr>
     ))}
   </tbody>
@@ -247,7 +257,7 @@ handledata=(e)=>{
 </Table>
         </Tab.Pane>
         <Tab.Pane eventKey="fourth">
-        <Table style={{width:"78vw",borderRadius:"20px",height:"94vh",marginTop:"15px",}} striped bordered hover variant="dark">
+        <Table style={{width:"78vw",borderRadius:"20px",height:"94vh",marginTop:"15px",}} striped bordered hover>
   <thead>
     <tr>
       <th>Email</th>
